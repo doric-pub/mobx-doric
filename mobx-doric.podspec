@@ -3,15 +3,16 @@ Pod::Spec.new do |s|
     s.version          = '0.1.0'
     s.summary          = 'Doric extension library'
   
-    #s.description      = <<-DESC
-    #                         DESC
+    s.description      = <<-DESC
+    This library provides extension library to support using mobx in doric.
+                            DESC
 
-    s.homepage         = 'http://xxx'
+    s.homepage         = 'https://github.com/doric-pub/mobx-doric'
     s.license          = { :type => 'Apache-2.0', :file => 'LICENSE' }
-    s.author           = { 'xxx' => 'xxx@xxx' }
-    s.source           = { :git => 'git@xxx', :tag => s.version.to_s }
+    s.author           = { 'pengfei.zhou' => 'pengfeizhou@foxmail.com' }
+    s.source           = { :git => 'https://github.com/doric-pub/mobx-doric.git', :tag => s.version.to_s }
   
-    s.ios.deployment_target = '9.0'
+    s.ios.deployment_target = '10.0'
   
     s.source_files = 'iOS/Classes/**/*'
     s.resource     =  "dist/**/*"
