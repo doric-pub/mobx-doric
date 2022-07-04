@@ -12,8 +12,8 @@
   },
   "license": "Apache-2.0",
   "dependencies": {
-    "doric": ">=0.10.0",
-    "doric-cli": ">=0.10.0",
+    "doric": ">=0.10.20",
+    "doric-cli": ">=0.10.20",
     "mobx": "^6.6.1"
   },
   "devDependencies": {
