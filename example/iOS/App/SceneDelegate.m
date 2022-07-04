@@ -1,6 +1,6 @@
 #import "SceneDelegate.h"
 #import <DoricCore/Doric.h>
-#import "mobx-doricLibrary.h"
+#import "DoricMobxLibrary.h"
 
 #if DEBUG
 
@@ -13,7 +13,7 @@
 
 @implementation SceneDelegate
 - (void)scene:(UIScene *)scene willConnectToSession:(UISceneSession *)session options:(UISceneConnectionOptions *)connectionOptions {
-    [Doric registerLibrary:[mobx-doricLibrary new]];
+    [Doric registerLibrary:[DoricMobxLibrary new]];
     UIWindowScene *windowScene = (UIWindowScene *) scene;
     NSString *bundleName = @"Example";
     DoricViewController *doricViewController = [[DoricViewController alloc] initWithSource:[NSString stringWithFormat:@"assets://src/%@.js", bundleName]
