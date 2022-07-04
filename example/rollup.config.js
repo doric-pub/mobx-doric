@@ -90,12 +90,12 @@ export default allFiles
         sourcemap: true,
       },
       plugins: [
-        resolve({ mainFields: ["jsnext"] }),
+        resolve({ mainFields: ["jsnext:main"] }),
         commonjs(),
         json(),
         image(),
       ],
-      external: ["reflect-metadata", "doric", "templatelibrary"],
+      external: ["reflect-metadata", "doric", "mobx-doric", "mobx"],
       onwarn: function (warning) {
         if (warning.code === "THIS_IS_UNDEFINED") {
           return;
