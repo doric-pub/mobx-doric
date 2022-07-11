@@ -28,6 +28,11 @@ plugins: [
 ```bash
 npm install mobx-doric --save
 ```
+在rollup.config.js中修改
+```javascript
+//将"mobx-doric","mobx"加入external中
+      external: ["reflect-metadata", "doric", "mobx-doric", "mobx"],
+```
 2. 添加Android依赖
   
   ```gradle
