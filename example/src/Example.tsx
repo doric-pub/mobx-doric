@@ -1,20 +1,20 @@
 import {
   Text,
-  List,
+  Color,
   Group,
   Panel,
   layoutConfig,
   Gravity,
   jsx,
-  HLayout,
-  Stack,
-  ListItem,
-  Color,
-  modal,
-  GestureContainer,
   createRef,
+  HLayout,
+  ListItem,
+  GestureContainer,
+  Stack,
+  List,
+  modal,
 } from "doric";
-import { action, computed, makeObservable, observable } from "mobx";
+import { makeObservable, observable, computed, action } from "mobx";
 import { observer } from "mobx-doric";
 
 interface ToDoItem {
@@ -102,7 +102,6 @@ function ToDoCell(props: { item: ToDoItem }) {
   ));
 }
 
-@Entry
 export class ToDoListPanel extends Panel {
   todos = new ToDoList();
   build(root: Group) {
