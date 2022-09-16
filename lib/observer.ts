@@ -16,8 +16,9 @@ function combineView(oldV: View, newV: View) {
     ) {
       {
         const v = Reflect.get(newV, key, newV);
-        if (!(v instanceof Function)) {
-          Reflect.set(oldV, key, Reflect.get(newV, key, newV), oldV);
+        Reflect.set(oldV, key, v, oldV);
+        if (key === "_ref") {
+          oldV.ref = v;
         }
       }
     }
