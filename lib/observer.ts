@@ -14,7 +14,12 @@ function combineView(oldV: View, newV: View) {
       key !== "nativeViewModel" &&
       key !== "children"
     ) {
-      Reflect.set(oldV, key, Reflect.get(newV, key, newV), oldV);
+      {
+        const v = Reflect.get(newV, key, newV);
+        if (!(v instanceof Function)) {
+          Reflect.set(oldV, key, Reflect.get(newV, key, newV), oldV);
+        }
+      }
     }
   }
   if (newV instanceof Group) {
