@@ -10,17 +10,22 @@ function combineView(oldV, newV) {
         throw new Error("View type should be the same");
     }
     for (let key in newV) {
-        if (key !== "viewId" &&
+        let toSet = key !== "viewId" &&
             key !== "__dirty_props__" &&
             key !== "callbacks" &&
             key !== "nativeViewModel" &&
-            key !== "children") {
-            {
-                const v = Reflect.get(newV, key, newV);
-                Reflect.set(oldV, key, v, oldV);
-                if (key === "_ref") {
-                    oldV.ref = v;
-                }
+            key !== "children";
+        if (newV instanceof doric.Refreshable) {
+            toSet = toSet && key !== "content" && key !== "header";
+        }
+        else if (newV instanceof doric.Scroller) {
+            toSet = toSet && key !== "content";
+        }
+        if (toSet) {
+            const v = Reflect.get(newV, key, newV);
+            Reflect.set(oldV, key, v, oldV);
+            if (key === "_ref") {
+                oldV.ref = v;
             }
         }
     }
@@ -38,6 +43,24 @@ function combineView(oldV, newV) {
             }
         }
     }
+    else if (newV instanceof doric.Refreshable) {
+        if (!(oldV instanceof doric.Refreshable)) {
+            throw new Error("View type should be the same");
+        }
+        if (oldV.header && newV.header) {
+            combineView(oldV.header, newV.header);
+        }
+        else {
+            oldV.header = newV.header;
+        }
+        combineView(oldV.content, newV.content);
+    }
+    else if (newV instanceof doric.Scroller) {
+        if (!(oldV instanceof doric.Scroller)) {
+            throw new Error("View type should be the same");
+        }
+        combineView(oldV.content, newV.content);
+    }
 }
 function observer(f) {
     let v;
@@ -49,6 +72,19 @@ function observer(f) {
         }
         combineView(v, nv);
     });
+    if (!v) {
+        v = f();
+        Promise.resolve().then(() => {
+            mobx.autorun(() => {
+                const nv = f();
+                if (!!!v) {
+                    v = nv;
+                    return;
+                }
+                combineView(v, nv);
+            });
+        });
+    }
     return v;
 }
 

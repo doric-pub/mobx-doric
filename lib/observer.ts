@@ -1,4 +1,4 @@
-import { Group, View } from "doric";
+import { Group, Refreshable, Scroller, View } from "doric";
 
 import { autorun } from "mobx";
 
@@ -6,20 +6,24 @@ function combineView(oldV: View, newV: View) {
   if (oldV.viewType() !== newV.viewType()) {
     throw new Error("View type should be the same");
   }
+
   for (let key in newV) {
-    if (
+    let toSet =
       key !== "viewId" &&
       key !== "__dirty_props__" &&
       key !== "callbacks" &&
       key !== "nativeViewModel" &&
-      key !== "children"
-    ) {
-      {
-        const v = Reflect.get(newV, key, newV);
-        Reflect.set(oldV, key, v, oldV);
-        if (key === "_ref") {
-          oldV.ref = v;
-        }
+      key !== "children";
+    if (newV instanceof Refreshable) {
+      toSet = toSet && key !== "content" && key !== "header";
+    } else if (newV instanceof Scroller) {
+      toSet = toSet && key !== "content";
+    }
+    if (toSet) {
+      const v = Reflect.get(newV, key, newV);
+      Reflect.set(oldV, key, v, oldV);
+      if (key === "_ref") {
+        oldV.ref = v;
       }
     }
   }
@@ -35,6 +39,21 @@ function combineView(oldV: View, newV: View) {
         combineView(oldV.children[i], newV.children[i]);
       }
     }
+  } else if (newV instanceof Refreshable) {
+    if (!(oldV instanceof Refreshable)) {
+      throw new Error("View type should be the same");
+    }
+    if (oldV.header && newV.header) {
+      combineView(oldV.header, newV.header);
+    } else {
+      oldV.header = newV.header
+    }
+    combineView(oldV.content, newV.content);
+  } else if (newV instanceof Scroller) {
+    if (!(oldV instanceof Scroller)) {
+      throw new Error("View type should be the same");
+    }
+    combineView(oldV.content, newV.content);
   }
 }
 
@@ -48,5 +67,18 @@ export function observer(f: () => View | JSX.Element) {
     }
     combineView(v, nv);
   });
+  if (!v) {
+    v = f();
+    Promise.resolve().then(() => {
+      autorun(() => {
+        const nv = f();
+        if (!!!v) {
+          v = nv;
+          return;
+        }
+        combineView(v, nv);
+      });
+    })
+  }
   return v as View | JSX.Element;
 }
