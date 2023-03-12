@@ -87,6 +87,14 @@ function observer(f) {
     }
     return v;
 }
+function Observer(props) {
+    const v = props.innerElement;
+    mobx.autorun(() => {
+        props.onChange(v);
+    });
+    return v;
+}
 
+exports.Observer = Observer;
 exports.observer = observer;
 //# sourceMappingURL=bundle_mobx-doric.js.map

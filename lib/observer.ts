@@ -82,3 +82,14 @@ export function observer(f: () => View | JSX.Element) {
   }
   return v as View | JSX.Element;
 }
+
+export function Observer<T>(props: {
+  innerElement: JSX.Element;
+  onChange: (v: T) => void;
+}) {
+  const v = props.innerElement;
+  autorun(() => {
+    props.onChange(v as unknown as T);
+  });
+  return v;
+}
