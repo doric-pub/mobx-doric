@@ -31,7 +31,7 @@ android {
     compileSdkVersion 29
 
     sourceSets {
-        main.assets.srcDirs += "../dist"
+//        main.assets.srcDirs += "../dist"
     }
     defaultConfig {
         minSdkVersion 16
