@@ -7,4 +7,5 @@ xcuserdata
 Pods/
 *.lock
 *.xcworkspace/xcshareddata/xcdebugger/
+*.DS_Store
 package-lock.json
