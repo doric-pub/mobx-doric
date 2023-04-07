@@ -5,6 +5,9 @@
 #import <SDWebImageWebPCoder/SDWebImageWebPCoder.h>
 #endif
 
+#import <DoricCore/Doric.h>
+#import "DoricMobxLibrary.h"
+
 @interface AppDelegate ()
 @end
 
@@ -14,6 +17,24 @@
 #if __has_include(<SDWebImage/SDWebImage.h>)
     [SDImageCodersManager.sharedManager addCoder:SDImageWebPCoder.sharedCoder];
 #endif
+    if (@available(iOS 13.0, *)) {
+        // 在SceneDelegate里创建UIWindow
+    } else {
+        self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
+        
+        [Doric registerLibrary:[DoricMobxLibrary new]];
+        NSString *bundleName = @"Example";
+        DoricViewController *doricViewController = [[DoricViewController alloc] initWithSource:[NSString stringWithFormat:@"assets://src/%@.js", bundleName] alias:bundleName extra:@""];
+        doricViewController.view.backgroundColor = [UIColor whiteColor];
+    #if DEBUG
+        UIBarButtonItem *rightBarItem = [[UIBarButtonItem alloc] initWithTitle:@"Devkit" style:UIBarButtonItemStylePlain target:self action:@selector(onOpenDevkit)];
+        doricViewController.navigationItem.rightBarButtonItem = rightBarItem;
+    #endif
+        UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:doricViewController];
+        
+        [self.window setRootViewController:navigationController];
+        [self.window makeKeyAndVisible];
+    }
     return YES;
 }
 

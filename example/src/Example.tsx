@@ -102,6 +102,7 @@ function ToDoCell(props: { item: ToDoItem }) {
   ));
 }
 
+@Entry
 export class ToDoListPanel extends Panel {
   todos = new ToDoList();
   build(root: Group) {
