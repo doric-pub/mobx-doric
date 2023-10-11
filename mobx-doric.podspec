@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
     s.name             = 'mobx-doric'
-    s.version          = '0.1.11'
+    s.version          = '0.1.12'
     s.summary          = 'Doric extension library'
   
     s.description      = <<-DESC
