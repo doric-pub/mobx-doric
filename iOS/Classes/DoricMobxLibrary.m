@@ -2,7 +2,7 @@
 
 @implementation DoricMobxLibrary
 - (void)load:(DoricRegistry *)registry {
-    NSString *path = [[NSBundle mainBundle] bundlePath];
+    NSString *path = [NSBundle bundleForClass:self.class].bundlePath;
     {
         NSString *fullPath = [path stringByAppendingPathComponent:@"bundle_mobx-doric.js"];
         NSString *jsContent = [NSString stringWithContentsOfFile:fullPath encoding:NSUTF8StringEncoding error:nil];
